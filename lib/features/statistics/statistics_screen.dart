@@ -373,7 +373,20 @@ class _BarChartSection extends StatelessWidget {
             BarChartData(
               alignment: BarChartAlignment.spaceAround,
               maxY: maxVal,
-              barTouchData: BarTouchData(enabled: false),
+              barTouchData: BarTouchData(
+                enabled: true,
+                touchTooltipData: BarTouchTooltipData(
+                  getTooltipItem: (group, groupIndex, rod, rodIndex) {
+                    final i = group.x.toInt();
+                    if (i < 0 || i >= trends.length) return null;
+                    final label = rodIndex == 0 ? 'Income' : 'Expense';
+                    return BarTooltipItem(
+                      '$label\n\$${rod.toY.toStringAsFixed(2)}',
+                      const TextStyle(color: Colors.white),
+                    );
+                  },
+                ),
+              ),
               titlesData: FlTitlesData(
                 leftTitles: AxisTitles(
                   sideTitles: SideTitles(
@@ -381,62 +394,53 @@ class _BarChartSection extends StatelessWidget {
                     reservedSize: 32,
                     getTitlesWidget: (v, meta) => Text(
                       '\$${v.toInt()}',
-                      style: const TextStyle(fontSize: 10),
+                      style: const TextStyle(fontSize: 14, color: AppColors.foregroundLight),
                     ),
                   ),
                 ),
                 bottomTitles: AxisTitles(
                   sideTitles: SideTitles(
                     showTitles: true,
-                    reservedSize: 28,
+                    reservedSize: 32,
                     getTitlesWidget: (i, meta) {
-                      if (i.toInt() >= 0 && i.toInt() < trends.length) {
-                        final t = trends[i.toInt()];
+                      final idx = i.toInt();
+                      if (idx >= 0 && idx < trends.length) {
+                        final t = trends[idx];
+                        final d = DateTime(t.year, t.month);
                         return Text(
-                          '${t.month}/${t.year.toString().substring(2)}',
-                          style: const TextStyle(fontSize: 10),
+                          DateFormat.MMM().format(d),
+                          style: const TextStyle(fontSize: 14, color: AppColors.foregroundLight),
                         );
                       }
                       return const Text('');
                     },
                   ),
                 ),
-                topTitles: const AxisTitles(
-                    sideTitles: SideTitles(showTitles: false)),
-                rightTitles: const AxisTitles(
-                    sideTitles: SideTitles(showTitles: false)),
+                topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
               ),
               gridData: const FlGridData(show: true, drawVerticalLine: false),
               borderData: FlBorderData(show: false),
               barGroups: [
-                for (var i = 0; i < trends.length; i++) ...[
+                for (var i = 0; i < trends.length; i++)
                   BarChartGroupData(
-                    x: i * 2,
+                    x: i,
                     barRods: [
                       BarChartRodData(
                         toY: trends[i].income,
                         color: AppColors.income,
                         width: 8,
-                        borderRadius: const BorderRadius.vertical(
-                            top: Radius.circular(4)),
+                        borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
                       ),
-                    ],
-                    showingTooltipIndicators: [],
-                  ),
-                  BarChartGroupData(
-                    x: i * 2 + 1,
-                    barRods: [
                       BarChartRodData(
                         toY: trends[i].expense,
                         color: AppColors.expense,
                         width: 8,
-                        borderRadius: const BorderRadius.vertical(
-                            top: Radius.circular(4)),
+                        borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
                       ),
                     ],
-                    showingTooltipIndicators: [],
+                    showingTooltipIndicators: [0, 1],
                   ),
-                ],
               ],
             ),
           ),

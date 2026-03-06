@@ -148,7 +148,8 @@ class _TransactionTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final type = transaction.type;
     final amount = transaction.amount;
-    final date = DateFormat.MMMd().format(transaction.dateTime);
+    final dateTimeStr =
+        DateFormat.yMMMd().add_jm().format(transaction.dateTime);
     final isIncome = type == TransactionType.income;
     final isTransfer = type == TransactionType.transfer;
     final amountColor = isIncome
@@ -158,50 +159,77 @@ class _TransactionTile extends StatelessWidget {
             : AppColors.expense;
     final typeLabel =
         isIncome ? 'Income' : isTransfer ? 'Transfer' : 'Expense';
-    return Card(
-      margin: const EdgeInsets.only(bottom: 8),
-      child: ListTile(
-        leading: CircleAvatar(
-          backgroundColor: amountColor.withValues(alpha: 0.2),
-          child: Icon(
-            isIncome
-                ? Icons.arrow_downward
-                : (isTransfer ? Icons.swap_horiz : Icons.arrow_upward),
-            color: amountColor,
-            size: 20,
-          ),
-        ),
-        title: Text(typeLabel),
-        subtitle: Text(date),
-        trailing: Text(
-          '${isIncome ? '+' : '-'}\$${amount.toStringAsFixed(2)}',
-          style: TextStyle(
-            fontWeight: FontWeight.w600,
-            color: amountColor,
-          ),
-        ),
-        onLongPress: () {
-          showDialog(
-            context: context,
-            builder: (ctx) => AlertDialog(
-              title: const Text('Delete transaction?'),
-              actions: [
-                TextButton(
-                    onPressed: () => Navigator.pop(ctx),
-                    child: const Text('Cancel')),
-                TextButton(
+
+    return FutureBuilder(
+      future: transaction.category.load(),
+      builder: (context, snapshot) {
+        final cat = transaction.category.value;
+        final titleText = cat?.name ?? typeLabel;
+
+        return Card(
+          margin: const EdgeInsets.only(bottom: 8),
+          child: ListTile(
+            leading: CircleAvatar(
+              backgroundColor: amountColor.withOpacity(0.2),
+              child: Icon(
+                isIncome
+                    ? Icons.arrow_upward
+                    : (isTransfer ? Icons.swap_horiz : Icons.arrow_downward),
+                color: amountColor,
+                size: 20,
+              ),
+            ),
+            title: Text(titleText),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(dateTimeStr),
+                if (transaction.notes != null && transaction.notes!.isNotEmpty)
+                  Text(transaction.notes!),
+              ],
+            ),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  child: Text(
+                    '${isIncome ? '+' : '-'}\$${amount.toStringAsFixed(2)}',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: amountColor,
+                    ),
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.delete, color: Colors.red),
                   onPressed: () {
-                    onDelete();
-                    Navigator.pop(ctx);
+                    showDialog(
+                      context: context,
+                      builder: (ctx) => AlertDialog(
+                        title: const Text('Delete transaction?'),
+                        actions: [
+                          TextButton(
+                              onPressed: () => Navigator.pop(ctx),
+                              child: const Text('Cancel')),
+                          TextButton(
+                            onPressed: () {
+                              onDelete();
+                              Navigator.pop(ctx);
+                            },
+                            child: const Text('Delete',
+                                style: TextStyle(color: Colors.red)),
+                          ),
+                        ],
+                      ),
+                    );
                   },
-                  child:
-                      const Text('Delete', style: TextStyle(color: Colors.red)),
                 ),
               ],
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }

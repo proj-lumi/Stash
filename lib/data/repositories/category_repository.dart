@@ -50,4 +50,15 @@ class CategoryRepository {
       }
     });
   }
+
+  /// Returns an existing category with [name] or creates a new one.
+  Future<Category> ensureCategory(String name) async {
+    final existing = await _isar.categorys.filter().nameEqualTo(name).findFirst();
+    if (existing != null) return existing;
+    final cat = Category.create(name: name);
+    await _isar.writeTxn(() async {
+      await _isar.categorys.put(cat);
+    });
+    return cat;
+  }
 }

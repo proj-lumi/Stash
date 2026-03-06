@@ -21,7 +21,6 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
   Account? _fromAccount;
   Account? _toAccount;
   final _transferFeeController = TextEditingController(text: '0');
-  DateTime _date = DateTime.now();
   final _notesController = TextEditingController();
 
   @override
@@ -64,9 +63,10 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
       }
     }
 
+    final now = DateTime.now();
     final t = Transaction.create(
       amount: amount,
-      dateTime: _date,
+      dateTime: now,
       type: _type,
       notes: _notesController.text.isEmpty ? null : _notesController.text,
       transferFee: _type == TransactionType.transfer
@@ -87,11 +87,29 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
           account: _selectedAccount!,
         );
       } else {
+        // transfer
         await transactionRepo.addTransaction(
           t,
           account: _fromAccount!,
           relatedAccount: _toAccount,
         );
+        // if there's a fee, also record it as a separate expense
+        final fee = double.tryParse(_transferFeeController.text) ?? 0;
+        if (fee > 0) {
+          // ensure there is a "Transfer Fee" category
+          final feeCat = await categoryRepo.ensureCategory('Transfer Fee');
+          final feeTx = Transaction.create(
+            amount: fee,
+            dateTime: now,
+            type: TransactionType.expense,
+            notes: 'Transfer fee',
+          );
+          await transactionRepo.addTransaction(
+            feeTx,
+            account: _fromAccount!,
+            category: feeCat,
+          );
+        }
       }
       if (mounted) _showSnack('Saved');
     } catch (e) {
@@ -124,8 +142,6 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
             _transferFeeField(),
             const SizedBox(height: 16),
           ],
-          _dateField(),
-          const SizedBox(height: 16),
           _notesField(),
           const SizedBox(height: 24),
           ElevatedButton(
@@ -363,23 +379,6 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
     );
   }
 
-  Widget _dateField() {
-    return Card(
-      child: ListTile(
-        title: const Text('Date'),
-        subtitle: Text('${_date.year}-${_date.month.toString().padLeft(2, '0')}-${_date.day.toString().padLeft(2, '0')}'),
-        onTap: () async {
-          final picked = await showDatePicker(
-            context: context,
-            initialDate: _date,
-            firstDate: DateTime(2020),
-            lastDate: DateTime.now(),
-          );
-          if (picked != null) setState(() => _date = picked);
-        },
-      ),
-    );
-  }
 
   Widget _notesField() {
     return Card(

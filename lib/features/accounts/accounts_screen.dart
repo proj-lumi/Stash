@@ -92,7 +92,7 @@ class AccountsScreen extends ConsumerWidget {
 
   void _showAddAccount(BuildContext context, WidgetRef ref, dynamic accountRepo) {
     final nameController = TextEditingController();
-    final typeController = TextEditingController(text: 'bank');
+    String selectedType = 'Bank';
     final initialController = TextEditingController(text: '0');
 
     showDialog(
@@ -108,10 +108,18 @@ class AccountsScreen extends ConsumerWidget {
                 decoration: const InputDecoration(labelText: 'Name'),
               ),
               const SizedBox(height: 12),
-              TextField(
-                controller: typeController,
-                decoration: const InputDecoration(
-                    labelText: 'Type', hintText: 'e.g. bank, cash, savings'),
+              DropdownButtonFormField<String>(
+                value: selectedType,
+                decoration: const InputDecoration(labelText: 'Type'),
+                items: ['Cash', 'E-Wallet', 'Bank'].map((type) {
+                  return DropdownMenuItem<String>(
+                    value: type,
+                    child: Text(type),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  if (value != null) selectedType = value;
+                },
               ),
               const SizedBox(height: 12),
               TextField(
@@ -135,9 +143,7 @@ class AccountsScreen extends ConsumerWidget {
                   double.tryParse(initialController.text) ?? 0;
               final account = Account.create(
                 name: name,
-                type: typeController.text.trim().isEmpty
-                    ? 'bank'
-                    : typeController.text.trim(),
+                type: selectedType,
                 initialBalance: initial,
               );
               await accountRepo.addAccount(account);

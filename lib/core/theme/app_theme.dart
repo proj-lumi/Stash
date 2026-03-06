@@ -129,6 +129,7 @@ class AppTheme {
   static ThemeData dark({double fontSize = 16.0}) {
     final base = ThemeData.dark(useMaterial3: true);
     return base.copyWith(
+      // revert to accent for surface to make cards stand out in dark mode
       colorScheme: const ColorScheme.dark(
         primary: AppColors.primary,
         onPrimary: AppColors.foregroundDark,
@@ -150,6 +151,8 @@ class AppTheme {
           fontWeight: FontWeight.w600,
         ),
       ),
+      // keep accent color for cards so they are slightly lighter than
+      // the background rather than making everything uniformly dark
       cardTheme: CardThemeData(
         color: AppColors.accent,
         elevation: 1,
@@ -193,7 +196,7 @@ class AppTheme {
   }
 
   static TextTheme _textTheme(TextTheme base, double fontSize) {
-    final scale = fontSize / 16.0;
+    final scale = fontSize / 20.0; // reduced scaling to prevent overly large text
     return base.copyWith(
       bodyLarge: base.bodyLarge?.copyWith(
         fontSize: (base.bodyLarge?.fontSize ?? 16) * scale,

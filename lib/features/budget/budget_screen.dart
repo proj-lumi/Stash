@@ -3,6 +3,7 @@ import 'package:budget_app/data/models/category.dart';
 import 'package:budget_app/data/providers/app_providers.dart';
 import 'package:budget_app/data/repositories/category_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class BudgetScreen extends ConsumerWidget {
@@ -153,7 +154,7 @@ class _MonthSelector extends StatelessWidget {
     );
   }
 
-  String _format(DateTime d) => '${d.year}-${d.month.toString().padLeft(2, '0')}';
+  String _format(DateTime d) => DateFormat.yMMM().format(d);
 }
 
 class _BudgetCard extends StatelessWidget {

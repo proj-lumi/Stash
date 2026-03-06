@@ -49,31 +49,32 @@ class _ShellScreenState extends State<ShellScreen> {
       appBar: AppBar(
         title: Text(_title),
         actions: [
-          PopupMenuButton<String>(
-            icon: const Icon(Icons.more_vert),
-            onSelected: (value) {
-              if (value == 'tutorial') {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => const TutorialScreen(),
-                  ),
-                );
-              } else if (value == 'settings') {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => const SettingsScreen(),
-                  ),
-                );
-              }
+          IconButton(
+            icon: const Icon(Icons.help_outline),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => const TutorialScreen(),
+                ),
+              );
             },
-            itemBuilder: (_) => [
-              const PopupMenuItem(value: 'tutorial', child: Text('Tutorial')),
-              const PopupMenuItem(value: 'settings', child: Text('Settings')),
-            ],
+            tooltip: 'Tutorial',
+          ),
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => const SettingsScreen(),
+                ),
+              );
+            },
+            tooltip: 'Settings',
           ),
         ],
       ),
-      body: Center(
+      body: Align(
+        alignment: Alignment.topCenter,
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 448),
           child: _buildBody(),

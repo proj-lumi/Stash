@@ -27,9 +27,10 @@ class SettingsRepository {
 
   final SharedPreferences _prefs;
 
+  // adjust defaults to avoid overly large text that spills off small screens
   static const double defaultFontSize = 16.0;
-  static const double minFontSize = 12.0;
-  static const double maxFontSize = 24.0;
+  static const double minFontSize = 14.0;
+  static const double maxFontSize = 18.0;
 
   AppSettings load() {
     final fontSize = _prefs.getDouble(_keyFontSize) ?? defaultFontSize;
