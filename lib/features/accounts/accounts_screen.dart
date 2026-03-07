@@ -175,8 +175,9 @@ class _TotalBalanceCard extends StatelessWidget {
             offset: const Offset(0, 2),
           ),
         ],
-        gradient: const LinearGradient(
-          colors: [AppColors.primary, AppColors.accent],
+        // always blue gradient regardless of theme
+        gradient: LinearGradient(
+          colors: [AppColors.primary, AppColors.primary.withOpacity(0.8)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),

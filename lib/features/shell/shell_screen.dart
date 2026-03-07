@@ -33,7 +33,7 @@ class _ShellScreenState extends State<ShellScreen> {
       case AppTab.transactions:
         return 'Transactions';
       case AppTab.add:
-        return 'Add';
+        return 'Add Transaction';
       case AppTab.statistics:
         return 'Statistics';
       case AppTab.budget:

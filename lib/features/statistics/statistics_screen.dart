@@ -439,7 +439,6 @@ class _BarChartSection extends StatelessWidget {
                         borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
                       ),
                     ],
-                    showingTooltipIndicators: [0, 1],
                   ),
               ],
             ),

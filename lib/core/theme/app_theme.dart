@@ -11,14 +11,16 @@ class AppColors {
   /// - #133863
   /// - #091D34 (darkest)
   static const Color backgroundLight = Color(0xFFE1ECF9);
-  static const Color backgroundDark = Color(0xFF091D34);
+  // grayscale dark background, no blue tint
+  static const Color backgroundDark = Color(0xFF101010);
 
-  static const Color foregroundLight = Color(0xFF091D34);
-  static const Color foregroundDark = Color(0xFFE1ECF9);
+  static const Color foregroundLight = Color(0xFFFAFAFA);
+  static const Color foregroundDark = Color(0xFFFAFAFA);
 
-  static const Color primary = Color(0xFF236AB9);
+  static const Color primary = Color(0xFF236AB9); // keep blue for accents like balance card
   static const Color primaryForeground = Color(0xFFE1ECF9);
-  static const Color accent = Color(0xFF133863);
+  // accent used for general UI elements in dark mode, using gray
+  static const Color accent = Color(0xFF444444);
 
   static const Color secondary = Color(0xFF609CE1);
   static const Color secondaryForeground = Color(0xFFE1ECF9);
@@ -151,10 +153,9 @@ class AppTheme {
           fontWeight: FontWeight.w600,
         ),
       ),
-      // keep accent color for cards so they are slightly lighter than
-      // the background rather than making everything uniformly dark
+      // use a slightly lighter accent shade for cards to boost contrast
       cardTheme: CardThemeData(
-        color: AppColors.accent,
+        color: AppColors.accent.withOpacity(0.9),
         elevation: 1,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(radiusCard),
@@ -162,6 +163,7 @@ class AppTheme {
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
+        fillColor: AppColors.accent.withOpacity(0.8),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(radiusXl),
         ),
