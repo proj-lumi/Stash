@@ -14,7 +14,7 @@ class AppColors {
   // grayscale dark background, no blue tint
   static const Color backgroundDark = Color(0xFF101010);
 
-  static const Color foregroundLight = Color(0xFFFAFAFA);
+  static const Color foregroundLight = Color(0xFF1F1F1F);
   static const Color foregroundDark = Color(0xFFFAFAFA);
 
   static const Color primary = Color(0xFF236AB9); // keep blue for accents like balance card

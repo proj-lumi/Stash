@@ -188,7 +188,7 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontWeight: FontWeight.w500,
-                color: selected ? AppColors.primaryForeground : AppColors.foregroundLight,
+                color: selected ? AppColors.primaryForeground : Theme.of(context).colorScheme.onSurface,
               ),
             ),
           ),

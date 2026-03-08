@@ -88,16 +88,9 @@ class TransactionRepository {
     final list = await _isar.transactions
         .filter()
         .dateTimeBetween(start, end, includeLower: true, includeUpper: true)
+        .typeEqualTo(TransactionType.expense)
         .findAll();
-    double total = 0;
-    for (final t in list) {
-      if (t.type == TransactionType.expense) {
-        total += t.amount;
-      } else if (t.type == TransactionType.transfer && t.transferFee != null) {
-        total += t.transferFee!;
-      }
-    }
-    return total;
+    return list.fold<double>(0, (sum, t) => sum + t.amount);
   }
 
   /// Expense per category for the month. Map: categoryId -> total amount.

@@ -170,7 +170,7 @@ class _TotalBalanceCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppTheme.radiusCard),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.08),
+            color: Theme.of(context).colorScheme.shadow.withValues(alpha: 0.12),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -188,14 +188,14 @@ class _TotalBalanceCard extends StatelessWidget {
             Text(
               'Total Balance',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Colors.white70,
+                    color: Theme.of(context).colorScheme.onPrimary,
                   ),
             ),
             const SizedBox(height: 4),
             Text(
               '\$${total.toStringAsFixed(2)}',
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.onPrimary,
                     fontWeight: FontWeight.bold,
                   ),
             ),

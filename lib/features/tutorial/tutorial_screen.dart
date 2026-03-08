@@ -81,11 +81,11 @@ class _VideoPlaceholder extends StatelessWidget {
             end: Alignment.bottomRight,
           ),
         ),
-        child: const Center(
+        child: Center(
           child: Icon(
             Icons.play_circle_fill,
             size: 64,
-            color: Colors.white54,
+            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.54),
           ),
         ),
       ),

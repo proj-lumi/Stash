@@ -264,10 +264,10 @@ class _ExpensePieChart extends StatelessWidget {
           title: '${(pct * 100).toStringAsFixed(0)}%',
           color: _colors[i % _colors.length],
           radius: 60,
-          titleStyle: const TextStyle(
+          titleStyle: TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w500,
-            color: Colors.white,
+            color: _getPieTitleColor(context),
           ),
         ),
       );
@@ -329,6 +329,10 @@ class _ExpensePieChart extends StatelessWidget {
     );
   }
 
+  Color _getPieTitleColor(BuildContext context) {
+    return Theme.of(context).colorScheme.onSurface;
+  }
+
   Future<Map<int, String>> _categoryNames(
       CategoryRepository repo, Iterable<int> ids) async {
     final map = <int, String>{};
@@ -362,89 +366,151 @@ class _BarChartSection extends StatelessWidget {
       0,
       (m, t) => [m, t.income, t.expense].reduce((a, b) => a > b ? a : b),
     );
-    final maxVal = maxY * 1.2.clamp(1.0, double.infinity);
+    final maxVal = _getRoundMaxValue(maxY * 1.2);
 
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
-        child: SizedBox(
-          height: 220,
-          child: BarChart(
-            BarChartData(
-              alignment: BarChartAlignment.spaceAround,
-              maxY: maxVal,
-              barTouchData: BarTouchData(
-                enabled: true,
-                touchTooltipData: BarTouchTooltipData(
-                  getTooltipItem: (group, groupIndex, rod, rodIndex) {
-                    final i = group.x.toInt();
-                    if (i < 0 || i >= trends.length) return null;
-                    final label = rodIndex == 0 ? 'Income' : 'Expense';
-                    return BarTooltipItem(
-                      '$label\n\$${rod.toY.toStringAsFixed(2)}',
-                      const TextStyle(color: Colors.white),
-                    );
-                  },
-                ),
-              ),
-              titlesData: FlTitlesData(
-                leftTitles: AxisTitles(
-                  sideTitles: SideTitles(
-                    showTitles: true,
-                    reservedSize: 32,
-                    getTitlesWidget: (v, meta) => Text(
-                      '\$${v.toInt()}',
-                      style: const TextStyle(fontSize: 14, color: AppColors.foregroundLight),
+        child: Column(
+          children: [
+            SizedBox(
+              height: 220,
+              child: BarChart(
+                BarChartData(
+                  alignment: BarChartAlignment.spaceAround,
+                  maxY: maxVal,
+                  barTouchData: BarTouchData(
+                    enabled: true,
+                    touchTooltipData: BarTouchTooltipData(
+                      getTooltipItem: (group, groupIndex, rod, rodIndex) {
+                        final i = group.x.toInt();
+                        if (i < 0 || i >= trends.length) return null;
+                        final label = rodIndex == 0 ? 'Income' : 'Expense';
+                        return BarTooltipItem(
+                          '$label\n\$${rod.toY.toStringAsFixed(2)}',
+                          const TextStyle(color: Colors.white),
+                        );
+                      },
                     ),
                   ),
-                ),
-                bottomTitles: AxisTitles(
-                  sideTitles: SideTitles(
-                    showTitles: true,
-                    reservedSize: 32,
-                    getTitlesWidget: (i, meta) {
-                      final idx = i.toInt();
-                      if (idx >= 0 && idx < trends.length) {
-                        final t = trends[idx];
-                        final d = DateTime(t.year, t.month);
-                        return Text(
-                          DateFormat.MMM().format(d),
-                          style: const TextStyle(fontSize: 14, color: AppColors.foregroundLight),
-                        );
-                      }
-                      return const Text('');
-                    },
+                  titlesData: FlTitlesData(
+                    leftTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        reservedSize: 40,
+                        interval: maxVal > 0 ? maxVal : 1,
+                        getTitlesWidget: (v, meta) {
+                          if (v == 0 || v == maxVal) {
+                            return Text(
+                              '\$${v.toInt()}',
+                              style: const TextStyle(fontSize: 12, color: Colors.black),
+                            );
+                          }
+                          return const SizedBox.shrink();
+                        },
+                      ),
+                    ),
+                    bottomTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        reservedSize: 32,
+                        getTitlesWidget: (i, meta) {
+                          final idx = i.toInt();
+                          if (idx >= 0 && idx < trends.length) {
+                            final t = trends[idx];
+                            final d = DateTime(t.year, t.month);
+                            return Text(
+                              DateFormat.MMM().format(d),
+                              style: const TextStyle(fontSize: 14, color: Colors.black),
+                            );
+                          }
+                          return const Text('');
+                        },
+                      ),
+                    ),
+                    topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
                   ),
+                  gridData: const FlGridData(show: true, drawVerticalLine: false),
+                  borderData: FlBorderData(show: false),
+                  barGroups: [
+                    for (var i = 0; i < trends.length; i++)
+                      BarChartGroupData(
+                        x: i,
+                        barRods: [
+                          BarChartRodData(
+                            toY: trends[i].income,
+                            color: AppColors.income,
+                            width: 8,
+                            borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
+                          ),
+                          BarChartRodData(
+                            toY: trends[i].expense,
+                            color: AppColors.expense,
+                            width: 8,
+                            borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
+                          ),
+                        ],
+                      ),
+                  ],
                 ),
-                topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
               ),
-              gridData: const FlGridData(show: true, drawVerticalLine: false),
-              borderData: FlBorderData(show: false),
-              barGroups: [
-                for (var i = 0; i < trends.length; i++)
-                  BarChartGroupData(
-                    x: i,
-                    barRods: [
-                      BarChartRodData(
-                        toY: trends[i].income,
-                        color: AppColors.income,
-                        width: 8,
-                        borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
-                      ),
-                      BarChartRodData(
-                        toY: trends[i].expense,
-                        color: AppColors.expense,
-                        width: 8,
-                        borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
-                      ),
-                    ],
-                  ),
+            ),
+            const SizedBox(height: 12),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _LegendItem(color: AppColors.income, label: 'Income'),
+                const SizedBox(width: 24),
+                _LegendItem(color: AppColors.expense, label: 'Expense'),
               ],
             ),
-          ),
+          ],
         ),
       ),
+    );
+  }
+
+  double _getRoundMaxValue(double value) {
+    if (value <= 0) return 100;
+    if (value <= 100) {
+      return ((value / 10).ceil() * 10).toDouble();
+    } else if (value <= 1000) {
+      return ((value / 50).ceil() * 50).toDouble();
+    } else {
+      return ((value / 100).ceil() * 100).toDouble();
+    }
+  }
+}
+
+class _LegendItem extends StatelessWidget {
+  const _LegendItem({
+    required this.color,
+    required this.label,
+  });
+
+  final Color color;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          width: 12,
+          height: 12,
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(2),
+          ),
+        ),
+        const SizedBox(width: 8),
+        Text(
+          label,
+          style: Theme.of(context).textTheme.bodySmall,
+        ),
+      ],
     );
   }
 }

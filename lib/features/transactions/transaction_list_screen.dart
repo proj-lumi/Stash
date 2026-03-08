@@ -202,7 +202,7 @@ class _TransactionTile extends StatelessWidget {
                   ),
                 ),
                 IconButton(
-                  icon: const Icon(Icons.delete, color: Colors.red),
+                  icon: const Icon(Icons.delete, color: AppColors.destructive),
                   onPressed: () {
                     showDialog(
                       context: context,
@@ -218,7 +218,7 @@ class _TransactionTile extends StatelessWidget {
                               Navigator.pop(ctx);
                             },
                             child: const Text('Delete',
-                                style: TextStyle(color: Colors.red)),
+                                style: TextStyle(color: AppColors.destructive)),
                           ),
                         ],
                       ),
