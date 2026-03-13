@@ -1,6 +1,6 @@
-import 'package:Stash/core/theme/app_theme.dart';
-import 'package:Stash/data/repositories/category_repository.dart';
-import 'package:Stash/data/providers/app_providers.dart';
+import 'package:stash/core/theme/app_theme.dart';
+import 'package:stash/data/repositories/category_repository.dart';
+import 'package:stash/data/providers/app_providers.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

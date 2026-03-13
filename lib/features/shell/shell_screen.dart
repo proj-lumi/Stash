@@ -1,11 +1,11 @@
-import 'package:Stash/core/theme/app_theme.dart';
-import 'package:Stash/features/accounts/accounts_screen.dart';
-import 'package:Stash/features/budget/budget_screen.dart';
-import 'package:Stash/features/settings/settings_screen.dart';
-import 'package:Stash/features/statistics/statistics_screen.dart';
-import 'package:Stash/features/transactions/add_transaction_screen.dart';
-import 'package:Stash/features/transactions/transaction_list_screen.dart';
-import 'package:Stash/features/tutorial/tutorial_screen.dart';
+import 'package:stash/core/theme/app_theme.dart';
+import 'package:stash/features/accounts/accounts_screen.dart';
+import 'package:stash/features/budget/budget_screen.dart';
+import 'package:stash/features/settings/settings_screen.dart';
+import 'package:stash/features/statistics/statistics_screen.dart';
+import 'package:stash/features/transactions/add_transaction_screen.dart';
+import 'package:stash/features/transactions/transaction_list_screen.dart';
+import 'package:stash/features/tutorial/tutorial_screen.dart';
 import 'package:flutter/material.dart';
 
 enum AppTab { transactions, add, statistics, budget, accounts }

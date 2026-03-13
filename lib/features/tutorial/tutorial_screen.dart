@@ -1,4 +1,4 @@
-import 'package:Stash/core/theme/app_theme.dart';
+import 'package:stash/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
 class TutorialScreen extends StatelessWidget {

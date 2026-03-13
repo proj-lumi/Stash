@@ -1,6 +1,6 @@
-import 'package:Stash/data/models/account.dart' as account_models;
-import 'package:Stash/data/models/category.dart' as category_models;
-import 'package:Stash/data/models/transaction.dart' as transaction_models;
+import 'package:stash/data/models/account.dart' as account_models;
+import 'package:stash/data/models/category.dart' as category_models;
+import 'package:stash/data/models/transaction.dart' as transaction_models;
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 

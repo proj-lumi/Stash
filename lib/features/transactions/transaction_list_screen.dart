@@ -1,6 +1,6 @@
-import 'package:Stash/core/theme/app_theme.dart';
-import 'package:Stash/data/models/transaction.dart';
-import 'package:Stash/data/providers/app_providers.dart';
+import 'package:stash/core/theme/app_theme.dart';
+import 'package:stash/data/models/transaction.dart';
+import 'package:stash/data/providers/app_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';

@@ -1,6 +1,6 @@
-import 'package:Stash/core/theme/app_theme.dart';
-import 'package:Stash/data/settings/settings_repository.dart';
-import 'package:Stash/features/shell/shell_screen.dart';
+import 'package:stash/core/theme/app_theme.dart';
+import 'package:stash/data/settings/settings_repository.dart';
+import 'package:stash/features/shell/shell_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

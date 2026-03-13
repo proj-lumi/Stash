@@ -1,9 +1,9 @@
-import 'package:Stash/data/database/database.dart';
-import 'package:Stash/data/models/transaction.dart';
-import 'package:Stash/data/repositories/account_repository.dart';
-import 'package:Stash/data/repositories/category_repository.dart';
-import 'package:Stash/data/repositories/transaction_repository.dart';
-import 'package:Stash/data/settings/settings_repository.dart';
+import 'package:stash/data/database/database.dart';
+import 'package:stash/data/models/transaction.dart';
+import 'package:stash/data/repositories/account_repository.dart';
+import 'package:stash/data/repositories/category_repository.dart';
+import 'package:stash/data/repositories/transaction_repository.dart';
+import 'package:stash/data/settings/settings_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isar/isar.dart';
 import 'package:shared_preferences/shared_preferences.dart';

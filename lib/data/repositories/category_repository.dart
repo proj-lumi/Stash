@@ -1,4 +1,4 @@
-import 'package:Stash/data/models/category.dart';
+import 'package:stash/data/models/category.dart';
 import 'package:isar/isar.dart';
 
 class CategoryRepository {
