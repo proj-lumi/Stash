@@ -429,8 +429,7 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
           children: [
             Row(
               children: [
-                Text('Transfer fee', style: Theme.of(context).textTheme.titleSmall),
-                const Text(' *', style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
+                Text('Transfer fee (optional)', style: Theme.of(context).textTheme.titleSmall),
               ],
             ),
             const SizedBox(height: 8),

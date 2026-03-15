@@ -119,12 +119,38 @@ class AccountsScreen extends ConsumerWidget {
             children: [
               TextField(
                 controller: nameController,
-                decoration: const InputDecoration(labelText: 'Name'),
+                decoration: InputDecoration(
+                  label: RichText(
+                    text: TextSpan(
+                      text: 'Name',
+                      style: Theme.of(ctx).textTheme.bodyMedium,
+                      children: const [
+                        TextSpan(
+                          text: ' *',
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ),
               const SizedBox(height: 12),
               DropdownButtonFormField<String>(
-                initialValue: selectedType,
-                decoration: const InputDecoration(labelText: 'Type'),
+                value: selectedType,
+                decoration: InputDecoration(
+                  label: RichText(
+                    text: TextSpan(
+                      text: 'Type',
+                      style: Theme.of(ctx).textTheme.bodyMedium,
+                      children: const [
+                        TextSpan(
+                          text: ' *',
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
                 items: ['Cash', 'E-Wallet', 'Bank'].map((type) {
                   return DropdownMenuItem<String>(
                     value: type,
@@ -189,7 +215,6 @@ class _TotalBalanceCard extends StatelessWidget {
             offset: const Offset(0, 2),
           ),
         ],
-        // always blue gradient regardless of theme
         gradient: LinearGradient(
           colors: [AppColors.primary, AppColors.primary.withValues(alpha: 0.8)],
           begin: Alignment.topLeft,
